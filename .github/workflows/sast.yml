@@ -20,5 +20,13 @@ jobs:
         run: |
           docker pull mixeway/scanner:latest
       - name: Run Scan
+        env:
+          OSS_USERNAME: ${{ secrets.OSS_USERNAME }}
+          OSS_KEY: ${{ secrets.OSS_KEY }}
+          MIXEWAY_KEY: ${{ secrets.MIXEWAY_KEY }}
+          MIXEWAY_PROJECT_ID: ${{ secrets.MIXEWAY_PROJECT_ID }}
+          MIXEWAY_PROJECT_NAME: ${{ secrets.MIXEWAY_PROJECT_NAME }}
+          BRANCH: ${{ steps.vars.outputs.BRANCH }}
+          SHA_SHORT: ${{ steps.vars.outputs.SHA_SHORT }}
         run: |
-          docker run -e OSS_USERNAME=01143732@pw.edu.pl -e OSS_KEY=8f7e0affa86ca0fafbd534baab9c56ad0388bcd -e MIXEWAY_URL=https://hub.mixeway.io -e MIXEWAY_KEY=1c2b7f27-3954-4fd4-add7-97c6c3e3fd6d -e MIXEWAY_PROJECT_ID=114 -e MODE=STANDALONE -e MIXEWAY_PROJECT_NAME=FunkySynACK_lab_secure_app -e COMMIT_ID=test -e BRANCH=master -v /opt/lab_sec_audit/sast:/opt/sources mixeway/scanner:latest 
+          docker run -e OSS_USERNAME="$OSS_USERNAME" -e OSS_KEY="$OSS_KEY" -e MIXEWAY_URL=https://hub.mixeway.io -e MIXEWAY_KEY="$MIXEWAY_KEY" -e MIXEWAY_PROJECT_ID="$MIXEWAY_PROJECT_ID" -e MODE=STANDALONE -e MIXEWAY_PROJECT_NAME="$MIXEWAY_PROJECT_NAME" -e COMMIT_ID=test -e BRANCH=master -v $(pwd):/opt/sources mixeway/scanner:latest 
